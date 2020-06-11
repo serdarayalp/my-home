@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -37,13 +39,9 @@ public class Maze {
      * @throws IllegalArgumentException unless both {@code 0 <= v < V} and {@code 0 <= w < V}
      */
     public void addEdge(int v, int w) {
-        M.addEdge(v, w);
-    }
-
-    // throw an IllegalArgumentException unless {@code 0 <= v < V}
-    private void validateVertex(int v) {
-        if (v < 0 || v >= (nVertex - 1))
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (nVertex - 1));
+        if (!hasEdge(v, w)) {
+            M.addEdge(v, w);
+        }
     }
 
     /**
@@ -54,7 +52,12 @@ public class Maze {
      * @return true or false
      */
     public boolean hasEdge(int v, int w) {
-        // TODO
+        if (v != w) {
+            LinkedList<Integer> adjV = M.adj(v);
+            LinkedList<Integer> adjW = M.adj(w);
+
+            return adjV.contains(w) || adjW.contains(v);
+        }
         return true;
     }
 
@@ -110,12 +113,35 @@ public class Maze {
         return M;
     }
 
+    private void printVertexAdjList(LinkedList<Integer> adjList) {
+        System.out.println("**********************");
+        for (Integer item : adjList) {
+            System.out.println(item);
+        }
+        System.out.println("**********************");
+    }
+
     public static void main(String[] args) {
-        Maze maze = new Maze(5, 0);
+        Maze maze = new Maze(4, 0);
         Graph mazeGridGraph = maze.mazegrid();
 
-        GridGraph gridGraph = new GridGraph(mazeGridGraph);
+        List<Integer> path = Arrays.asList(0, 1, 5, 9, 13);
+
+        GridGraph gridGraph = new GridGraph(mazeGridGraph, path);
         gridGraph.plot();
+
+        /*maze.printVertexAdjList(maze.M.adj(0));*/
+
+        maze.printVertexAdjList(maze.M.adj(1));
+
+        /*maze.printVertexAdjList(maze.M.adj(2));
+        maze.printVertexAdjList(maze.M.adj(3));
+
+        maze.printVertexAdjList(maze.M.adj(12));
+        maze.printVertexAdjList(maze.M.adj(13));
+        maze.printVertexAdjList(maze.M.adj(14));
+        maze.printVertexAdjList(maze.M.adj(15));*/
+
     }
 
 

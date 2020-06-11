@@ -112,6 +112,10 @@ public class DepthFirstPaths {
                     marked[w] = true;
                     if (v != w) {
                         preorder.add(w);
+                        edgeTo[w] = v;
+                        if (w != s) {
+                            distTo[w] = distTo[v] + 1;
+                        }
                     }
                     stack.push(w);
                 }
@@ -238,8 +242,8 @@ public class DepthFirstPaths {
         dfp.printVertexAdjList(g.adj(4));
         dfp.printVertexAdjList(g.adj(5));*/
 
-        dfp.dfs(g);
-        // dfp.nonrecursiveDFS(g);
+        // dfp.dfs(g);
+        dfp.nonrecursiveDFS(g);
 
         if (dfp.preorder.peek() != null) {
             for (Integer integer : dfp.preorder) {
